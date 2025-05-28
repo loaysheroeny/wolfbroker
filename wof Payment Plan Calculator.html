@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Payment Plan Calculator - Wolf Broker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #cce5f6, #f6f9fc);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .container {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .container h2 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #2a3f54;
+    }
+
+    .branding {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 25px;
+      color: #4f7c9c;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2a3f54;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccddee;
+      border-radius: 8px;
+      font-size: 16px;
+      background-color: #f9f9f9;
+    }
+
+    .result {
+      margin-top: 30px;
+      background: #eef7fb;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: left;
+      color: #2a3f54;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background: #2a9df4;
+      color: #fff;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #1e7cc4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>🔢 Payment Plan Calculator</h2>
+    <div class="branding">🐺 Wolf Broker</div>
+
+    <div class="form-group">
+      <label for="price">Total Price</label>
+      <input type="number" id="price" placeholder="Enter total price (e.g. 100000)">
+    </div>
+
+    <div class="form-group">
+      <label for="downPercent">Downpayment (%)</label>
+      <input type="number" id="downPercent" placeholder="Enter downpayment % (e.g. 20)">
+    </div>
+
+    <div class="form-group">
+      <label for="years">Installment Duration (Years)</label>
+      <input type="number" id="years" placeholder="Enter number of years (e.g. 5)">
+    </div>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div class="result" id="result">
+      <!-- Result will appear here -->
+    </div>
+  </div>
+
+  <script>
+    function calculate() {
+      const price = parseFloat(document.getElementById("price").value);
+      const downPercent = parseFloat(document.getElementById("downPercent").value);
+      const years = parseInt(document.getElementById("years").value);
+      const resultDiv = document.getElementById("result");
+
+      if (isNaN(price) || isNaN(downPercent) || isNaN(years) || years <= 0 || downPercent < 0 || downPercent > 100) {
+        resultDiv.innerHTML = "<p style='color:red;'>⚠️ Please enter valid values in all fields.</p>";
+        return;
+      }
+
+      const downpaymentValue = (downPercent / 100) * price;
+      const remaining = price - downpaymentValue;
+
+      const months = years * 12;
+      const quarters = years * 4;
+
+      const monthlyPayment = (remaining / months).toFixed(2);
+      const quarterlyPayment = (remaining / quarters).toFixed(2);
+      const yearlyPayment = (remaining / years).toFixed(2);
+
+      resultDiv.innerHTML = `
+        <p>✅ Thank you! Based on your input:</p>
+        <p>💰 <strong>Downpayment</strong> is <strong>${downpaymentValue.toFixed(2)}</strong> EGP — this is what you'll pay upfront.</p>
+        <p>📆 <strong>Monthly Payment</strong>: <strong>${monthlyPayment}</strong> EGP/month over ${months} months.</p>
+        <p>📆 <strong>Quarterly Payment</strong>: <strong>${quarterlyPayment}</strong> EGP every 3 months.</p>
+        <p>📆 <strong>Yearly Payment</strong>: <strong>${yearlyPayment}</strong> EGP/year for ${years} years.</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
